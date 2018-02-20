@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Shape
+
+
+class ShapeAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Shape, ShapeAdmin)

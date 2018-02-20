@@ -17,6 +17,8 @@ INSTALLED_APPS += (
     'debug_toolbar',
 )
 
+AUTH_PASSWORD_VALIDATORS = []
+
 MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
