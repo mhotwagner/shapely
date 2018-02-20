@@ -26,8 +26,10 @@ class Shape(models.Model):
 
 
 STRING = 'string'
+INTEGER = 'integer'
 SHAPE_ATTRIBUTE_TYPES = (
     (STRING, 'STRING'),
+    (INTEGER, 'integer')
 )
 
 
@@ -43,5 +45,25 @@ class ShapeAttribute(models.Model):
 
 
 class ShapeAttributeValue(models.Model):
+    TYPE_CASTER = {
+        STRING: lambda x: str(x),
+        INTEGER: lambda x: int(x),
+    }
+
     string_value = models.CharField(max_length=64)
     type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
+
+    @property
+    def value(self):
+        return self.TYPE_CASTER[self.type](self.string_value)
+
+    def save(self, *args, **kwargs):
+        try:
+            self.TYPE_CASTER[self.type](self.string_value)
+        except ValueError:
+            raise IntegrityError('"{}" cannot be cast to type {}'.format(
+                self.string_value, self.type,
+            ))
+
+        super(ShapeAttributeValue, self).save(*args, **kwargs)
+

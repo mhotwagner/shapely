@@ -2,7 +2,10 @@ from django.db import IntegrityError
 from django.test import TestCase
 
 from ..factories import ShapeFactory, ShapeAttributeFactory, ShapeAttributeValueFactory
-from ..models import Shape, ShapeAttribute, ShapeAttributeValue
+from ..models import (
+    Shape, ShapeAttribute, ShapeAttributeValue,
+    INTEGER, STRING,
+)
 
 
 class TestShapeModel(TestCase):
@@ -72,3 +75,24 @@ class TestShapeAttributeValue(TestCase):
 
         self.assertIsNotNone(fetched_value.id)
         self.assertEqual(value, fetched_value)
+
+    def test_value_with_type_string_returns_a_string(self):
+        value = ShapeAttributeValueFactory.create(string_value='some value')
+
+        self.assertEqual(type(value.value), str)
+
+    def test_value_with_type_integer_cannot_be_a_non_integer_string(self):
+        with self.assertRaises(IntegrityError):
+            ShapeAttributeValueFactory.create(
+                string_value='some value',
+                type=INTEGER,
+            )
+
+    def test_value_with_type_integer_returns_an_integer(self):
+        value = ShapeAttributeValueFactory.create(
+            string_value='999',
+            type=INTEGER,
+        )
+
+        self.assertEqual(type(value.value), int)
+        self.assertEqual(value.value, 999)
