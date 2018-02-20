@@ -1,6 +1,21 @@
-from django.db import models
+from django.db import models, IntegrityError
 
 from apps.common.utils import dynamicdefaultdict
+
+
+class ShapeAttribute(models.Model):
+    STRING = 'string'
+    SHAPE_ATTRIBUTE_TYPES = (
+        (STRING, 'STRING'),
+    )
+
+    name = models.CharField(max_length=16)
+    type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
+    
+    def save(self, *args, **kwargs):
+        if self.name == '':
+            raise IntegrityError('name cannot be blank')
+        super(ShapeAttribute, self).save(*args, **kwargs)
 
 
 class Shape(models.Model):

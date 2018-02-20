@@ -2,12 +2,17 @@ from django.db import IntegrityError
 from django.test import TestCase
 from factory import DjangoModelFactory
 
-from ..models import Shape
+from ..models import Shape, ShapeAttribute
 
 
 class ShapeFactory(DjangoModelFactory):
     class Meta:
         model = Shape
+
+
+class ShapeAttributeFactory(DjangoModelFactory):
+    class Meta:
+        model = ShapeAttribute
 
 
 class TestShapeModel(TestCase):
@@ -20,6 +25,7 @@ class TestShapeModel(TestCase):
 
         fetched_shape = Shape.objects.get(id=shape.id)
 
+        self.assertIsNotNone(fetched_shape.id)
         self.assertEqual(shape, fetched_shape)
 
     def test_a_shape_with_3_vertices_has_shape_name_triangle(self):
@@ -31,3 +37,17 @@ class TestShapeModel(TestCase):
         shape = ShapeFactory.create(vertices=11)
 
         self.assertEqual(shape.shape_name, '11-gon')
+
+
+class TestShapeAttributeModel(TestCase):
+    def test_a_shape_attribute_cannot_be_created_without_a_name(self):
+        with self.assertRaises(IntegrityError):
+            ShapeAttributeFactory.create()
+
+    def test_a_shape_attribute_can_be_created_with_a_name(self):
+        shape_attribute = ShapeAttributeFactory.create(name='an attribute')
+
+        fetched_shape_attribute = ShapeAttribute.objects.get(name='an attribute')
+
+        self.assertIsNotNone(fetched_shape_attribute.id)
+        self.assertEqual(shape_attribute, fetched_shape_attribute)
