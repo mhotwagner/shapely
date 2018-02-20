@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.test import TestCase
 from factory import DjangoModelFactory
 
-from .models import Shape, dynamicdefaultdict
+from .models import Shape
 
 
 class ShapeFactory(DjangoModelFactory):
@@ -31,10 +31,3 @@ class TestShapeModel(TestCase):
         shape = ShapeFactory.create(vertices=11)
 
         self.assertEqual(shape.shape_name, '11-gon')
-
-
-class TestDynamicDefaultDict(TestCase):
-    def test_default_factory_can_return_key_for_missing_item(self):
-        test_dict = dynamicdefaultdict(lambda key: key)
-
-        self.assertEqual(test_dict['missing_key'], 'missing_key')
