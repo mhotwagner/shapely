@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Shape
+from .models import Shape, ShapeAttribute
 
 
 class ShapeSerializer(serializers.ModelSerializer):
@@ -9,4 +9,14 @@ class ShapeSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'shape_name',
+        )
+
+
+class ShapeAttributeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShapeAttribute
+        fields = (
+            'id',
+            'name',
+            'type',
         )
