@@ -34,6 +34,7 @@ SHAPE_ATTRIBUTE_TYPES = (
 class ShapeAttribute(models.Model):
     name = models.CharField(max_length=16)
     type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
+    values = models.ManyToManyField('ShapeAttributeValue', related_name='attributes')
 
     def save(self, *args, **kwargs):
         if self.name == '':

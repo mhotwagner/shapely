@@ -46,18 +46,22 @@ class TestShapeAttributeModel(TestCase):
             ShapeAttributeFactory.create()
 
     def test_a_shape_attribute_can_be_created_with_valid_inputs(self):
-        shape_attribute = ShapeAttributeFactory.create(name='an attribute')
+        attribute = ShapeAttributeFactory.create(name='an attribute')
 
-        fetched_shape_attribute = ShapeAttribute.objects.get(name='an attribute')
+        fetched_attribute = ShapeAttribute.objects.get(name='an attribute')
 
-        self.assertIsNotNone(fetched_shape_attribute.id)
-        self.assertEqual(shape_attribute, fetched_shape_attribute)
+        self.assertIsNotNone(fetched_attribute.id)
+        self.assertEqual(attribute, fetched_attribute)
 
-    def test_a_shape_can_be_added_to_a_shape_attribute(self):
-        shape_attribute = ShapeAttributeFactory.create(name='an attribute')
-        shape_attribute.shapes.add(self.shape)
+    def test_a_shape_attribute_can_have_values(self):
+        value_1 = ShapeAttributeValueFactory.create(string_value='red')
+        value_2 = ShapeAttributeValueFactory.create(string_value='blue')
 
-        self.assertEqual(shape_attribute.shapes.count(), 1)
+        attribute = ShapeAttributeFactory(name='color')
+
+        attribute.values.add(value_1, value_2)
+
+        self.assertEqual(attribute.values.count(), 2)
 
 
 class TestShapeAttributeValue(TestCase):
