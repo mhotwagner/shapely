@@ -9,6 +9,7 @@ class ShapeSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'shape_name',
+            'vertices',
         )
 
 
