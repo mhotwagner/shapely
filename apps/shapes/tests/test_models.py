@@ -42,9 +42,6 @@ class TestShapeModel(TestCase):
         shape_attribute_1 = ShapeAttributeFactory(name='one')
         shape_attribute_2 = ShapeAttributeFactory(name='two')
         shape = ShapeFactory.create(vertices=3)
-
-        self.assertEqual(shape.attributes.count(), 0)
-
         shape.attributes.add(shape_attribute_1, shape_attribute_2)
 
         self.assertEqual(shape.attributes.count(), 2)
