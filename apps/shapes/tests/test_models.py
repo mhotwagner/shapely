@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.test import TestCase
 from factory import DjangoModelFactory
 
-from .models import Shape
+from ..models import Shape
 
 
 class ShapeFactory(DjangoModelFactory):
