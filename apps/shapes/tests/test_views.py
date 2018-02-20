@@ -117,7 +117,7 @@ class TestShapeViewSet(TestCase):
 
     def test_delete_route_deletes_object(self):
         shape = ShapeFactory.create(vertices=3)
-        response = self.client.delete(reverse('shapes:shape-detail', kwargs={'pk': shape.id}))
+        self.client.delete(reverse('shapes:shape-detail', kwargs={'pk': shape.id}))
         with self.assertRaises(Shape.DoesNotExist):
             Shape.objects.get(id=shape.id)
 
