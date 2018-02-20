@@ -3,21 +3,6 @@ from django.db import models, IntegrityError
 from apps.common.utils import dynamicdefaultdict
 
 
-class ShapeAttribute(models.Model):
-    STRING = 'string'
-    SHAPE_ATTRIBUTE_TYPES = (
-        (STRING, 'STRING'),
-    )
-
-    name = models.CharField(max_length=16)
-    type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
-    
-    def save(self, *args, **kwargs):
-        if self.name == '':
-            raise IntegrityError('name cannot be blank')
-        super(ShapeAttribute, self).save(*args, **kwargs)
-
-
 class Shape(models.Model):
     SHAPE_NAMES = dynamicdefaultdict(lambda vertices: '{}-gon'.format(vertices))
     SHAPE_NAMES[3] = 'triangle'
@@ -30,6 +15,7 @@ class Shape(models.Model):
     SHAPE_NAMES[1] = 'decagon'
 
     vertices = models.IntegerField(null=False)
+    attributes = models.ManyToManyField('ShapeAttribute', related_name='shapes')
 
     @property
     def shape_name(self):
@@ -37,3 +23,18 @@ class Shape(models.Model):
 
     def __str__(self):
         return self.shape_name
+
+
+class ShapeAttribute(models.Model):
+    STRING = 'string'
+    SHAPE_ATTRIBUTE_TYPES = (
+        (STRING, 'STRING'),
+    )
+
+    name = models.CharField(max_length=16)
+    type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
+
+    def save(self, *args, **kwargs):
+        if self.name == '':
+            raise IntegrityError('name cannot be blank')
+        super(ShapeAttribute, self).save(*args, **kwargs)
