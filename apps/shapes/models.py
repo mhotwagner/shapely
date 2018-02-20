@@ -25,12 +25,13 @@ class Shape(models.Model):
         return self.shape_name
 
 
-class ShapeAttribute(models.Model):
-    STRING = 'string'
-    SHAPE_ATTRIBUTE_TYPES = (
-        (STRING, 'STRING'),
-    )
+STRING = 'string'
+SHAPE_ATTRIBUTE_TYPES = (
+    (STRING, 'STRING'),
+)
 
+
+class ShapeAttribute(models.Model):
     name = models.CharField(max_length=16)
     type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
 
@@ -38,3 +39,8 @@ class ShapeAttribute(models.Model):
         if self.name == '':
             raise IntegrityError('name cannot be blank')
         super(ShapeAttribute, self).save(*args, **kwargs)
+
+
+class ShapeAttributeValue(models.Model):
+    string_value = models.CharField(max_length=64)
+    type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)

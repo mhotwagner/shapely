@@ -1,18 +1,8 @@
 from django.db import IntegrityError
 from django.test import TestCase
-from factory import DjangoModelFactory
 
-from ..models import Shape, ShapeAttribute
-
-
-class ShapeFactory(DjangoModelFactory):
-    class Meta:
-        model = Shape
-
-
-class ShapeAttributeFactory(DjangoModelFactory):
-    class Meta:
-        model = ShapeAttribute
+from ..factories import ShapeFactory, ShapeAttributeFactory, ShapeAttributeValueFactory
+from ..models import Shape, ShapeAttribute, ShapeAttributeValue
 
 
 class TestShapeModel(TestCase):
@@ -68,3 +58,13 @@ class TestShapeAttributeModel(TestCase):
         shape_attribute.shapes.add(self.shape)
 
         self.assertEqual(shape_attribute.shapes.count(), 1)
+
+
+class TestShapeAttributeValue(TestCase):
+    def test_a_value_can_be_created(self):
+        value = ShapeAttributeValueFactory.create()
+
+        fetched_value = ShapeAttributeValue.objects.first()
+
+        self.assertIsNotNone(fetched_value.id)
+        self.assertEqual(value, fetched_value)
