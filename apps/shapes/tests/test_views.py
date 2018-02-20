@@ -1,9 +1,8 @@
-import json
-
 from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_201_CREATED
 
+from ..models import Shape
 from ..factories import ShapeFactory
 
 
@@ -52,8 +51,19 @@ class TestShapeViewSet(TestCase):
     def test_create_route_returns_201_for_valid_data(self):
         response = self.client.post(
             reverse('shapes:shape-list'),
-            {'vertices': 4},
+            {'vertices': 4, 'name': 'test'},
+        )
+        self.assertEqual(response.status_code, HTTP_201_CREATED)
+
+    def test_create_route_creates_a_shape(self):
+        response = self.client.post(
+            reverse('shapes:shape-list'),
+            {'vertices': 4, 'name': 'test square'},
         )
 
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        shape = Shape.objects.get(name='test square')
+
+        self.assertEqual(shape.id, response.data['id'])
+
+
 

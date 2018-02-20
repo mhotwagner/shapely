@@ -25,7 +25,10 @@ class Shape(models.Model):
         return self.SHAPE_NAMES[self.vertices]
 
     def __str__(self):
-        return self.shape_name
+        if self.name:
+            return '{}:{}'.format(self.name, self.shape_name)
+        else:
+            return self.shape_name
 
 
 STRING = 'string'
