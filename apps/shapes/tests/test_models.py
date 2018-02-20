@@ -21,6 +21,14 @@ class TestShapeModel(TestCase):
         self.assertIsNotNone(fetched_shape.id)
         self.assertEqual(shape, fetched_shape)
 
+    def test_a_shape_can_be_created_with_a_name(self):
+        shape = ShapeFactory.create(name='test triangle', vertices=3)
+
+        fetched_shape = Shape.objects.get(name='test triangle')
+
+        self.assertIsNotNone(fetched_shape.id)
+        self.assertEqual(shape, fetched_shape)
+
     def test_a_shape_with_3_vertices_has_shape_name_triangle(self):
         triangle = ShapeFactory.create(vertices=3)
 

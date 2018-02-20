@@ -16,6 +16,7 @@ class Shape(models.Model):
     SHAPE_NAMES[9] = 'nonagon'
     SHAPE_NAMES[1] = 'decagon'
 
+    name = models.CharField(max_length=64)
     vertices = models.IntegerField(null=False)
     attributes = models.ManyToManyField('ShapeAttribute', related_name='shapes')
 
