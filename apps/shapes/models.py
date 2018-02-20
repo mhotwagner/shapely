@@ -1,3 +1,5 @@
+from distutils.util import strtobool
+
 from django.db import models, IntegrityError
 
 from apps.common.utils import dynamicdefaultdict
@@ -27,9 +29,11 @@ class Shape(models.Model):
 
 STRING = 'string'
 INTEGER = 'integer'
+BOOLEAN = 'boolean'
 SHAPE_ATTRIBUTE_TYPES = (
     (STRING, 'STRING'),
-    (INTEGER, 'integer')
+    (INTEGER, 'INTEGER'),
+    (BOOLEAN, 'BOOLEAN'),
 )
 
 
@@ -48,6 +52,7 @@ class ShapeAttributeValue(models.Model):
     TYPE_CASTER = {
         STRING: lambda x: str(x),
         INTEGER: lambda x: int(x),
+        BOOLEAN: lambda x: bool(strtobool(x))
     }
 
     string_value = models.CharField(max_length=64)

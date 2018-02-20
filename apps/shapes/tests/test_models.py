@@ -5,7 +5,7 @@ from ..factories import ShapeFactory, ShapeAttributeFactory, ShapeAttributeValue
 from ..models import (
     Shape, ShapeAttribute, ShapeAttributeValue,
     INTEGER, STRING,
-)
+    BOOLEAN)
 
 
 class TestShapeModel(TestCase):
@@ -96,3 +96,20 @@ class TestShapeAttributeValue(TestCase):
 
         self.assertEqual(type(value.value), int)
         self.assertEqual(value.value, 999)
+
+    def test_value_with_type_boolean_cannot_must_have_truth_value(self):
+        # "truth value" as defined by distutils.util.strtobool
+        with self.assertRaises(IntegrityError):
+            ShapeAttributeValueFactory.create(
+                string_value='who knows',
+                type=BOOLEAN,
+            )
+
+    def test_value_with_type_boolean_returns_boolean(self):
+        value = ShapeAttributeValueFactory.create(
+            string_value='no',
+            type=BOOLEAN,
+        )
+
+        self.assertEqual(type(value.value), bool)
+        self.assertFalse(value.value)
