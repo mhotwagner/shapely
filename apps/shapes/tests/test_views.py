@@ -1,5 +1,8 @@
+import json
+
 from django.test import TestCase, Client
 from django.urls import reverse
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_201_CREATED
 
 from ..factories import ShapeFactory
 
@@ -12,7 +15,7 @@ class TestShapeViewSet(TestCase):
 
     def test_list_returns_200(self):
         response = self.client.get(reverse('shapes:shape-list'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTP_200_OK)
 
     def test_list_returns_all_shapes(self):
         response = self.client.get(reverse('shapes:shape-list'))
@@ -29,13 +32,13 @@ class TestShapeViewSet(TestCase):
         response = self.client.get(
             reverse('shapes:shape-detail', kwargs={'pk': 999}),
         )
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
 
     def test_detail_returns_200_for_valid_id(self):
         response = self.client.get(
             reverse('shapes:shape-detail', kwargs={'pk': self.shape_1.id}),
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTP_200_OK)
 
     def test_detail_returns_serialized_shape_for_valid_id(self):
         response = self.client.get(
@@ -45,3 +48,12 @@ class TestShapeViewSet(TestCase):
             {'shape_name': 'triangle', 'vertices': 3}.items()).
             issubset(set(response.data.items())),
         )
+
+    def test_create_route_returns_201_for_valid_data(self):
+        response = self.client.post(
+            reverse('shapes:shape-list'),
+            {'vertices': 4},
+        )
+
+        self.assertEqual(response.status_code, HTTP_201_CREATED)
+
