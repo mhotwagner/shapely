@@ -18,7 +18,7 @@ class Shape(models.Model):
 
     name = models.CharField(max_length=64)
     vertices = models.IntegerField(null=False)
-    attributes = models.ManyToManyField('ShapeAttribute', related_name='shapes')
+    attributes = models.ManyToManyField('ShapeAttribute', related_name='shapes', null=True)
 
     @property
     def shape_name(self):
