@@ -14,6 +14,18 @@ class TestShapeSerializer(TestCase):
         self.assertIsNotNone(serializer.data['id'])
         self.assertEqual(serializer.data['shape_name'], 'triangle')
 
+    def test_valid_data_can_be_saved_to_a_shape(self):
+        shape_data = {'name': 'test', 'vertices': 5}
+        serializer = ShapeSerializer(data=shape_data)
+        serializer.is_valid()
+        serializer.save()
+        self.assertIsNotNone(serializer.data['id'])
+
+    def test_a_henagon_cannot_be_created(self):
+        shape_data = {'name': 'henagon', 'vertices': 1}
+        serializer = ShapeSerializer(data=shape_data)
+        self.assertFalse(serializer.is_valid())
+
 
 class TestShapeAttributeSerializer(TestCase):
     def test_it_can_serialize_a_shape_attribute(self):
