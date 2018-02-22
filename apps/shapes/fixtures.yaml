@@ -1,0 +1,48 @@
+- model: shapes.shape
+  pk: 1
+  fields:
+    name: Configurable
+    vertices: 4
+    attributes: [1, 2]
+- model: shapes.shape
+  pk: 2
+  fields:
+    name: Configurable
+    vertices: 3
+    attributes: [1, 2]
+- model: shapes.shape
+  pk: 3
+  fields:
+    name: Configurable
+    vertices: 5
+    attributes: [1, 2]
+- model: shapes.shapeattribute
+  pk: 1
+  fields:
+    name: Side Length
+    type: integer
+    values: [1, 2, 3]
+- model: shapes.shapeattribute
+  pk: 2
+  fields:
+    name: Color
+    type: string
+    values: [4, 5, 6]
+- model: shapes.shapeattributevalue
+  pk: 1
+  fields: {string_value: '10', slug: '10', type: integer}
+- model: shapes.shapeattributevalue
+  pk: 2
+  fields: {string_value: '100', slug: '100', type: integer}
+- model: shapes.shapeattributevalue
+  pk: 3
+  fields: {string_value: '1000', slug: '1000', type: integer}
+- model: shapes.shapeattributevalue
+  pk: 4
+  fields: {string_value: red, slug: red, type: string}
+- model: shapes.shapeattributevalue
+  pk: 5
+  fields: {string_value: blue, slug: blue, type: string}
+- model: shapes.shapeattributevalue
+  pk: 6
+  fields: {string_value: green, slug: green, type: string}
