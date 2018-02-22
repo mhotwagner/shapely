@@ -58,13 +58,13 @@ class ShapeAttribute(models.Model):
 
 class ShapeAttributeValue(models.Model):
     TYPE_CASTER = {
-        STRING: lambda x: str(x),
-        INTEGER: lambda x: int(x),
+        STRING: str,
+        INTEGER: int,
         BOOLEAN: lambda x: bool(strtobool(x)),
     }
 
     string_value = models.CharField(max_length=64)
-    slug = AutoSlugField(populate_from=string_value)
+    slug = AutoSlugField(populate_from='string_value')
     type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
 
     @property
