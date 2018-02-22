@@ -82,4 +82,4 @@ class ShapeAttributeValue(models.Model):
         super(ShapeAttributeValue, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.string_value
+        return self.slug
