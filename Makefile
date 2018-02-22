@@ -2,7 +2,6 @@ makemigrations:
 	DJANGO_SETTINGS_MODULE=shapely.settings.local python manage.py makemigrations
 
 migrate:
-	DJANGO_SETTINGS_MODULE=shapely.settings.local python manage.py makemigrations
 	DJANGO_SETTINGS_MODULE=shapely.settings.local python manage.py migrate
 
 start:

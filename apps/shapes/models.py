@@ -19,7 +19,7 @@ class Shape(models.Model):
 
     name = models.CharField(max_length=64)
     vertices = models.IntegerField(null=False)
-    attributes = models.ManyToManyField('ShapeAttribute', related_name='shapes', null=True)
+    attributes = models.ManyToManyField('ShapeAttribute', related_name='shapes')
 
     @property
     def shape_name(self):
@@ -82,4 +82,4 @@ class ShapeAttributeValue(models.Model):
         super(ShapeAttributeValue, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.value
+        return self.string_value
