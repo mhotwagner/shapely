@@ -1,6 +1,7 @@
 from distutils.util import strtobool
 
 from django.db import models, IntegrityError
+from django_extensions.db.fields import AutoSlugField
 
 from apps.common.utils import dynamicdefaultdict
 
@@ -51,15 +52,19 @@ class ShapeAttribute(models.Model):
             raise IntegrityError('name cannot be blank')
         super(ShapeAttribute, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class ShapeAttributeValue(models.Model):
     TYPE_CASTER = {
-        STRING: lambda x: str(x),
-        INTEGER: lambda x: int(x),
-        BOOLEAN: lambda x: bool(strtobool(x))
+        STRING: str,
+        INTEGER: int,
+        BOOLEAN: lambda x: bool(strtobool(x)),
     }
 
     string_value = models.CharField(max_length=64)
+    slug = AutoSlugField(populate_from='string_value')
     type = models.CharField(max_length=8, choices=SHAPE_ATTRIBUTE_TYPES, default=STRING)
 
     @property
@@ -76,3 +81,5 @@ class ShapeAttributeValue(models.Model):
 
         super(ShapeAttributeValue, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.slug
